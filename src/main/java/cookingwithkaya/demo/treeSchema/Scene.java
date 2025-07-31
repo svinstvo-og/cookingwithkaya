@@ -1,10 +1,7 @@
 package cookingwithkaya.demo.treeSchema;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,8 +12,9 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Scene {
-    @JsonProperty("name")
+    @JsonProperty("video")
     private String videoName;
     private List<Choice> choices;
 }

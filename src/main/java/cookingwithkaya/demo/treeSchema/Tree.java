@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class Tree {
     @JsonProperty("start")
     private String startSceneName;
     @JsonProperty("nodes")
-    private HashSet<Scene> scenes;
+    private HashMap<String, Scene> scenes;
     @JsonProperty("endings")
     private List<String> endingScenesNames;
 }

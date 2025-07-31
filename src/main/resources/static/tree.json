@@ -1,0 +1,28 @@
+{
+  "start": "intro",
+  "nodes": {
+    "intro": {
+      "video": "intro.mp4",
+      "choices": [
+        {
+          "text": "Пивко",
+          "next": "pivo",
+          "achievement": "Пивоварище сука"
+        },
+        {
+          "text": "Я выбираю спорт!",
+          "next": "football",
+          "achievement": "Спортсмен бро"
+        }
+      ]
+    },
+    "pivo": {
+      "video": "pivo.mp4",
+      "choices": []
+    },
+    "football": {
+      "video": "football.mp4",
+      "choices": []
+    }
+  }
+}
