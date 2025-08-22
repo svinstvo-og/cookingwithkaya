@@ -115,6 +115,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            object-fit: cover;
         }
 
         #game-video {
@@ -124,20 +125,26 @@
         }
 
         .choices-overlay {
-            position: absolute;
-            bottom: 0;
+            position: fixed;           /* cover whole screen */
+            top: 0;
             left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            padding: 2rem;
-            display: none;
+            width: 100%;
+            height: 100%;
+
+            display: none;             /* hidden by default */
+            align-items: center;       /* center buttons vertically */
+            justify-content: center;   /* center buttons horizontally */
+
+            backdrop-filter: blur(8px); /* BLUR background */
+            background: rgba(0, 0, 0, 0.4); /* optional dark overlay */
+            z-index: 1000;             /* keep on top */
         }
 
         .choices-container {
             display: flex;
-            justify-content: center;
-            gap: 1rem;
             flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
         }
 
         .choice-btn {
@@ -372,8 +379,8 @@
             <button class="btn" onclick="showAuth('login')" id="authBtn">Login</button>
         </div>
         <div class="social-links">
-            <a href="https://www.artstation.com/mariiavelykodna" class="social-link" target="_blank">LinkedIn</a>
-            <a href="https://www.linkedin.com/in/mariia-velykodna-aab743350/" class="social-link" target="_blank">ArtStation</a>
+            <a href="https://www.artstation.com/mariiavelykodna" class="social-link" target="_blank">ArtStation</a>
+            <a href="https://www.linkedin.com/in/mariia-velykodna-aab743350/" class="social-link" target="_blank">LinkedIn</a>
         </div>
     </div>
 </div>
@@ -382,7 +389,7 @@
 <div class="game-screen" id="gameScreen">
     <button class="back-btn" onclick="backToMenu()">← Back to Menu</button>
     <div class="video-container">
-        <video id="game-video" controls>
+        <video autoplay playsinline id="game-video">
             Your browser does not support the video tag.
         </video>
         <div class="choices-overlay" id="choicesOverlay">
