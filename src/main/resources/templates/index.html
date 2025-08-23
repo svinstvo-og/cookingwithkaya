@@ -125,27 +125,29 @@
         }
 
         .choices-overlay {
-            position: fixed;           /* cover whole screen */
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
 
-            display: none;             /* hidden by default */
-            align-items: center;       /* center buttons vertically */
-            justify-content: center;   /* center buttons horizontally */
+            display: flex;              /* flex layout */
+            align-items: center;        /* center vertically */
+            justify-content: center;    /* center horizontally */
 
-            backdrop-filter: blur(8px); /* BLUR background */
-            background: rgba(0, 0, 0, 0.4); /* optional dark overlay */
-            z-index: 1000;             /* keep on top */
+            backdrop-filter: blur(8px); /* blur background */
+            background: rgba(0, 0, 0, 0.4); /* dark overlay */
+            z-index: 1000;
+            visibility: hidden;         /* hide by default */
+            opacity: 0;                 /* transition option */
+            transition: opacity 0.3s ease;
         }
 
-        .choices-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
+        .choices-overlay.active {
+            visibility: visible;
+            opacity: 1;
         }
+
 
         .choice-btn {
             padding: 15px 30px;
@@ -153,7 +155,7 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.29) 0%, rgba(0, 0, 0, 0.29) 100%);
             color: white;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
@@ -376,7 +378,7 @@
         <div class="menu-buttons">
             <button class="btn btn-primary" onclick="startGame()">Play</button>
             <button class="btn btn-secondary" onclick="showAchievements()">Achievements</button>
-            <button class="btn" onclick="showAuth('login')" id="authBtn">Login</button>
+<!--            <button class="btn" onclick="showAuth('login')" id="authBtn">Login</button>-->
         </div>
         <div class="social-links">
             <a href="https://www.artstation.com/mariiavelykodna" class="social-link" target="_blank">ArtStation</a>
@@ -604,7 +606,7 @@
         const choicesOverlay = document.getElementById('choicesOverlay');
 
         // Hide choices while loading video
-        choicesOverlay.style.display = 'none';
+        choicesOverlay.classList.remove('active');
 
         // Load and play video
         video.src = `${API_BASE}/video/${sceneId}`;
@@ -628,7 +630,7 @@
         choicesContainer.innerHTML = '';
 
         if (scene.choices && scene.choices.length > 0) {
-            // Show choices
+            // Add choice buttons
             scene.choices.forEach(choice => {
                 const button = document.createElement('button');
                 button.className = 'choice-btn';
@@ -637,7 +639,8 @@
                 choicesContainer.appendChild(button);
             });
 
-            choicesOverlay.style.display = 'block';
+            // Show overlay
+            choicesOverlay.classList.add('active');
         } else {
             // This is an ending
             setTimeout(() => {
@@ -648,8 +651,10 @@
     }
 
     async function makeChoice(choice) {
+        const choicesOverlay = document.getElementById('choicesOverlay');
+
         // Hide choices
-        document.getElementById('choicesOverlay').style.display = 'none';
+        choicesOverlay.classList.remove('active');
 
         // Unlock achievement if specified
         if (choice.achievement && authToken) {
@@ -667,6 +672,7 @@
         currentScene = choice.next;
         await playScene(currentScene);
     }
+
 
     // Achievements Functions
     async function showAchievements() {
