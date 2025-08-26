@@ -1,6 +1,7 @@
 package cookingwithkaya.demo.treeSchema;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.annotation.Nullable;
 import lombok.*;
 
 import java.util.HashMap;
@@ -16,5 +17,8 @@ import java.util.Set;
 public class Scene {
     @JsonProperty("video")
     private String videoName;
+    @JsonProperty("image")
+    @Nullable
+    private String imageName;
     private List<Choice> choices;
 }

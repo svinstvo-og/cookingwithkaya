@@ -1,27 +1,24 @@
 {
-  "start": "intro",
+  "start": "1",
   "nodes": {
-    "intro": {
-      "video": "intro.mp4",
+    "1": {
+      "video": "1.MP4",
       "choices": [
         {
-          "text": "Пивко",
-          "next": "pivo",
-          "achievement": "Пивоварище сука"
+          "text": "Pumpkin",
+          "next": "3",
+          "achievement": "TODO"
         },
         {
-          "text": "Я выбираю спорт!",
-          "next": "football",
-          "achievement": "Спортсмен бро"
+          "text": "Meat",
+          "next": "3",
+          "achievement": "todo"
         }
       ]
     },
-    "pivo": {
-      "video": "pivo.mp4",
-      "choices": []
-    },
-    "football": {
-      "video": "football.mp4",
+    "3": {
+      "image": "18.jpg",
+      "video": "3.MP4",
       "choices": []
     }
   }

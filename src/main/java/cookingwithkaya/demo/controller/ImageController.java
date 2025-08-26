@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/video")
-public class VideoController {
+@RequestMapping("/api/image")
+public class ImageController {
 
-    private final TreeService treeService;
+    final
+    TreeService treeService;
 
-    public VideoController(TreeService treeService) {
+    public ImageController(TreeService treeService) {
         this.treeService = treeService;
     }
 
@@ -29,20 +30,20 @@ public class VideoController {
     public ResponseEntity<InputStreamResource> getVideo(@PathVariable String sceneId) throws IOException {
         Tree tree = treeService.loadTree();
 
-        String videoFileName = "static/videos/" + tree.getScenes().get(sceneId).getVideoName() + ".MP4";
+        String imageFileName = "static/videos/" + tree.getScenes().get(sceneId).getImageName() + ".MP4";
 
-        ClassPathResource videoFile = new ClassPathResource(videoFileName);
+        ClassPathResource imageFile = new ClassPathResource(imageFileName);
 
-        if (!videoFile.exists()) {
+        if (!imageFile.exists()) {
             return ResponseEntity.notFound().build();
         }
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.valueOf("video/mp4"));
+        headers.setContentType(MediaType.valueOf("image/jpg"));
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .contentLength(videoFile.contentLength())
-                .body(new InputStreamResource(videoFile.getInputStream()));
+                .contentLength(imageFile.contentLength())
+                .body(new InputStreamResource(imageFile.getInputStream()));
     }
 }
