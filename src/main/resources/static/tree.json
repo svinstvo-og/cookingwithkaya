@@ -2,16 +2,16 @@
   "start": "1",
   "nodes": {
     "1": {
-      "video": "1.MP4",
+      "video": "1",
       "choices": [
         {
           "text": "Pumpkin",
-          "next": "3",
+          "next": "2",
           "achievement": "TODO"
         },
         {
           "text": "Meat",
-          "next": "3",
+          "next": "2",
           "achievement": "todo"
         }
       ]
