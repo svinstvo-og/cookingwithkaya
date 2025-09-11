@@ -2,6 +2,7 @@ package cookingwithkaya.demo.controller;
 
 import cookingwithkaya.demo.service.TreeService;
 import cookingwithkaya.demo.treeSchema.Tree;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
@@ -17,6 +18,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/video")
+@Slf4j
 public class VideoController {
 
     private final TreeService treeService;
@@ -29,7 +31,8 @@ public class VideoController {
     public ResponseEntity<InputStreamResource> getVideo(@PathVariable String sceneId) throws IOException {
         Tree tree = treeService.loadTree();
 
-        String videoFileName = "static/videos/" + tree.getScenes().get(sceneId).getVideoName() + ".MP4";
+        String videoFileName = "static/videos/" + tree.getScenes().get(sceneId).getVideoName();
+        log.info("got vid {}", videoFileName);
 
         ClassPathResource videoFile = new ClassPathResource(videoFileName);
 

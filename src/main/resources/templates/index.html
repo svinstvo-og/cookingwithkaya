@@ -13,7 +13,9 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            background-image: url("https://i.pinimg.com/736x/8c/8c/e9/8c8ce9a3c0c05c6db9693a34d99c96d0.jpg");
+            background-size: auto;
+            background-position: center;
             color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
@@ -629,18 +631,21 @@
         GameState.mediaLoaded = false;
 
         try {
-            // Handle image display first (if present)
-            if (scene.image) {
-                await displayImage(sceneId, scene.image);
+            // If scene has both image and video, handle them concurrently
+            if (scene.image && scene.video) {
+                Logger.game('Scene has both image and video - starting concurrent loading');
+                await displayImageAndPreloadVideo(sceneId, scene.image, scene.video);
             }
-
-            // Handle video playback (if present)
-            if (scene.video) {
+            // If only image
+            else if (scene.image) {
+                await displayImage(sceneId); //, scene.image
+            }
+            // If only video
+            else if (scene.video) {
                 await playVideo(sceneId, scene.video);
             }
-
             // If no media at all, proceed directly to choices or end
-            if (!scene.image && !scene.video) {
+            else {
                 Logger.game('No media in scene, proceeding to choices');
                 onMediaComplete();
             }
@@ -651,21 +656,22 @@
         }
     }
 
-    async function displayImage(sceneId, imageName) {
-        Logger.image('Displaying image for scene:', sceneId);
+    async function displayImage(sceneId) {
+        Logger.image('Displaying image:', sceneId);
 
         const imageElement = document.getElementById('game-image');
-        const videoElement = document.getElementById('game-video');
         const timerElement = document.getElementById('image-timer');
         const timerText = document.getElementById('timer-text');
 
-        // Hide video, show image
-        videoElement.style.display = 'none';
         imageElement.style.display = 'block';
-        timerElement.style.display = 'block';
+        timerElement.style.display = 'none';
 
         // Set image source
         imageElement.src = API_ENDPOINTS.image(sceneId);
+
+        // Start preloading video immediately
+        // Logger.video('Starting video preload while image displays');
+        // const videoPreloadPromise = preloadVideo(sceneId, videoName);
 
         Logger.image('Starting 3-second timer');
 
@@ -673,7 +679,8 @@
         let timeLeft = 3;
         timerText.textContent = timeLeft;
 
-        return new Promise((resolve) => {
+        // Wait for 3-second timer to complete
+        await new Promise((resolve) => {
             GameState.currentTimer = setInterval(() => {
                 timeLeft--;
                 timerText.textContent = timeLeft;
@@ -690,7 +697,134 @@
         });
     }
 
-    async function playVideo(sceneId, videoName) {
+    async function displayImageAndPreloadVideo(sceneId) {
+        Logger.image('Displaying image and preloading video for scene:', sceneId);
+
+        const imageElement = document.getElementById('game-image');
+        const videoElement = document.getElementById('game-video');
+        const timerElement = document.getElementById('image-timer');
+        const timerText = document.getElementById('timer-text');
+
+        // Hide video, show image
+        videoElement.style.display = 'none';
+        imageElement.style.display = 'block';
+        timerElement.style.display = 'none';
+
+        // Set image source
+        imageElement.src = API_ENDPOINTS.image(sceneId);
+
+        // Start preloading video immediately
+        // Logger.video('Starting video preload while image displays');
+        // const videoPreloadPromise = preloadVideo(sceneId, videoName);
+
+        Logger.image('Starting 3-second timer');
+
+        // Start 3-second countdown
+        let timeLeft = 3;
+        timerText.textContent = timeLeft;
+
+        // Wait for 3-second timer to complete
+        await new Promise((resolve) => {
+            GameState.currentTimer = setInterval(() => {
+                timeLeft--;
+                timerText.textContent = timeLeft;
+                Logger.image('Timer tick:', timeLeft);
+
+                if (timeLeft <= 0) {
+                    clearInterval(GameState.currentTimer);
+                    timerElement.style.display = 'none';
+                    imageElement.style.display = 'none';
+                    Logger.image('Image display timer complete');
+                    resolve();
+                }
+            }, 1000);
+        });
+
+        await playVideo(sceneId);
+        // // Wait for video to finish loading (if not already loaded)
+        // Logger.video('Waiting for video preload to complete');
+        // await videoPreloadPromise;
+        //
+        // // Now play the preloaded video immediately
+        // Logger.video('Video preloaded, starting immediate playback');
+        // await playPreloadedVideo();
+    }
+
+    // async function preloadVideo(sceneId, videoName) {
+    //     const videoElement = document.getElementById('game-video');
+    //
+    //     // Set video source and start loading
+    //     videoElement.src = API_ENDPOINTS.video(sceneId);
+    //
+    //     return new Promise((resolve, reject) => {
+    //         const onCanPlayThrough = () => {
+    //             Logger.video('Video preload complete - ready for immediate playback');
+    //             GameState.mediaLoaded = true;
+    //             cleanup();
+    //             resolve();
+    //         };
+    //
+    //         const onError = (error) => {
+    //             Logger.error('Video preload failed', error);
+    //             cleanup();
+    //             reject(error);
+    //         };
+    //
+    //         const cleanup = () => {
+    //             videoElement.removeEventListener('canplaythrough', onCanPlayThrough);
+    //             videoElement.removeEventListener('error', onError);
+    //         };
+    //
+    //         // Set up event listeners
+    //         videoElement.addEventListener('canplaythrough', onCanPlayThrough);
+    //         videoElement.addEventListener('error', onError);
+    //
+    //         // Start loading the video
+    //         videoElement.load();
+    //     });
+    // }
+
+    // async function playPreloadedVideo() {
+    //     const videoElement = document.getElementById('game-video');
+    //     const imageElement = document.getElementById('game-image');
+    //
+    //     // Hide image, show video
+    //     imageElement.style.display = 'none';
+    //     videoElement.style.display = 'block';
+    //
+    //     return new Promise((resolve, reject) => {
+    //         const onEnded = () => {
+    //             Logger.video('Preloaded video playback completed');
+    //             cleanup();
+    //             resolve();
+    //         };
+    //
+    //         const onError = (error) => {
+    //             Logger.error('Preloaded video playback failed', error);
+    //             cleanup();
+    //             reject(error);
+    //         };
+    //
+    //         const cleanup = () => {
+    //             videoElement.removeEventListener('ended', onEnded);
+    //             videoElement.removeEventListener('error', onError);
+    //         };
+    //
+    //         // Set up event listeners
+    //         videoElement.addEventListener('ended', onEnded);
+    //         videoElement.addEventListener('error', onError);
+    //
+    //         // Start playing immediately (video should be ready)
+    //         videoElement.play().then(() => {
+    //             Logger.video('Preloaded video started playing immediately');
+    //         }).catch(error => {
+    //             Logger.error('Failed to play preloaded video', error);
+    //             reject(error);
+    //         });
+    //     });
+    // }
+
+    async function playVideo(sceneId) {
         Logger.video('Loading video for scene:', sceneId);
 
         const videoElement = document.getElementById('game-video');

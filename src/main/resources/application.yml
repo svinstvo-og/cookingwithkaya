@@ -2,8 +2,8 @@ spring:
   application:
     name: "cook.old"
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/kaya
-    username: postgres
-    password: zxca
-    driver-class-name: org.postgresql.Driver
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/kaya
+#    username: postgres
+#    password: zxca
+#    driver-class-name: org.postgresql.Driver
