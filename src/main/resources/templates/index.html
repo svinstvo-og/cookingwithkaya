@@ -4,21 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Cutscene Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: "Sansation", sans-serif;
+            font-weight: 400;
+            font-style: normal;
         }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background-image: url("https://i.pinimg.com/736x/8c/8c/e9/8c8ce9a3c0c05c6db9693a34d99c96d0.jpg");
-            background-size: auto;
-            background-position: center;
-            color: #ffffff;
-            min-height: 100vh;
-            overflow-x: hidden;
+        .start-btn {
+            background: url("https://imgur.com/a/cgae9e9") no-repeat center center;
+            background-size: contain;
+            opacity: 0;
+            width: 600px;   /* adjust to your PNG dimensions */
+            height: 80px;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 100px;
         }
 
         .container {
@@ -27,79 +34,40 @@
             padding: 20px;
         }
 
-        /* Main Menu Styles */
         .main-menu {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: url("https://i.postimg.cc/BngwzpwN/Light-Brown-Cream-and-Peach-Modern-Chic-Personal-Wall-Calendar.jpg") no-repeat center center;
+            background-size: cover;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
-        }
-
-        .game-title {
-            font-size: 3.5rem;
-            font-weight: bold;
-            margin-bottom: 2rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .menu-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .btn {
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            min-width: 200px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, #ff6b6b 0%, #ff8e53 100%);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(45deg, #4ecdc4 0%, #44a08d 100%);
+            align-items: flex-end;
+            overflow: hidden;
         }
 
         .social-links {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
             display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .social-link {
-            color: #ffffff;
+
+        .social-links a {
+            color: #ccc;
             text-decoration: none;
-            padding: 10px 20px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 25px;
-            transition: all 0.3s ease;
+            font-size: 36px;
+            transition: color 0.2s;
+            font-family: "Caveat Brush", cursive;
+            font-weight: 400;
+            font-style: normal;
         }
 
-        .social-link:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.6);
+        .social-links a:hover {
+            color: #fff;
         }
 
         /* Game Screen Styles */
@@ -143,6 +111,7 @@
             visibility: hidden;         /* hide by default */
             opacity: 0;                 /* transition option */
             transition: opacity 0.3s ease;
+            padding: 20px;              /* add padding for responsive spacing */
         }
 
         .choices-overlay.active {
@@ -150,17 +119,60 @@
             opacity: 1;
         }
 
+        .choices-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;  /* spread buttons evenly across width */
+            align-items: center;            /* center vertically within container */
+            width: 100%;
+            max-width: 1200px;             /* limit maximum width */
+            gap: 20px;                     /* spacing between buttons */
+        }
+
+        /* Handle 2 choices - both in one row */
+        .choices-container.two-choices {
+            justify-content: space-evenly;
+        }
+
+        .choices-container.two-choices .choice-btn {
+            flex: 0 1 auto;
+            min-width: 200px;
+            max-width: 300px;
+        }
+
+        /* Handle 3 choices - 2 on first row, 1 centered on second */
+        .choices-container.three-choices {
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .choices-container.three-choices .choice-row {
+            display: flex;
+            justify-content: space-evenly;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .choices-container.three-choices .choice-row.first-row {
+            justify-content: space-evenly;
+        }
+
+        .choices-container.three-choices .choice-row.second-row {
+            justify-content: center;
+        }
 
         .choice-btn {
             padding: 15px 30px;
-            font-size: 1.1rem;
+            color: white;
+            font-size: 2.5rem;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             background: linear-gradient(45deg, rgba(0, 0, 0, 0.29) 0%, rgba(0, 0, 0, 0.29) 100%);
-            color: white;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            min-width: 200px;
+            text-align: center;
         }
 
         .choice-btn:hover {
@@ -179,28 +191,7 @@
             color: white;
             cursor: pointer;
             z-index: 10;
-        }
-
-        /* Auth Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            margin: 10% auto;
-            padding: 2rem;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin: 20px;
         }
 
         .modal h2 {
@@ -233,71 +224,6 @@
             color: rgba(255,255,255,0.5);
         }
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            color: white;
-        }
-
-        /* Achievements Styles */
-        .achievements-screen {
-            display: none;
-            padding: 2rem;
-        }
-
-        .achievements-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .achievements-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .achievement-card {
-            background: rgba(255,255,255,0.1);
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-            border: 2px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
-        }
-
-        .achievement-card.unlocked {
-            background: linear-gradient(45deg, #4ecdc4 0%, #44a08d 100%);
-            border-color: #4ecdc4;
-            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
-        }
-
-        .achievement-card.locked {
-            opacity: 0.5;
-            filter: grayscale(100%);
-        }
-
-        .achievement-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .achievement-title {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .achievement-description {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.8);
-        }
-
         /* Loading Styles */
         .loading {
             display: none;
@@ -322,27 +248,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* User Info */
-        .user-info {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: white;
-            background: rgba(0,0,0,0.7);
-            padding: 10px 15px;
-            border-radius: 5px;
-        }
-
-        .logout-btn {
-            background: none;
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 3px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             .game-title {
@@ -352,6 +257,22 @@
             .choices-container {
                 flex-direction: column;
                 align-items: center;
+                gap: 15px;
+            }
+
+            .choices-container.two-choices {
+                flex-direction: column;
+            }
+
+            .choices-container.three-choices .choice-row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .choice-btn {
+                width: 100%;
+                max-width: 300px;
+                font-size: 1.5rem;
             }
 
             .modal-content {
@@ -360,6 +281,9 @@
             }
         }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap" rel="stylesheet">
 </head>
 <body>
 <!-- Loading Indicator -->
@@ -368,18 +292,15 @@
 </div>
 
 <!-- Main Menu -->
+<!-- Main Menu -->
 <div class="main-menu" id="mainMenu">
-    <div class="container">
-        <h1 class="game-title">Cooking with kaya</h1>
-        <div class="menu-buttons">
-            <button class="btn btn-primary" onclick="startGame()">Play</button>
-            <button class="btn btn-secondary" onclick="showAchievements()">Achievements</button>
-<!--            <button class="btn" onclick="showAuth('login')" id="authBtn">Login</button>-->
-        </div>
-        <div class="social-links">
-            <a href="https://www.artstation.com/mariiavelykodna" class="social-link" target="_blank">ArtStation</a>
-            <a href="https://www.linkedin.com/in/mariia-velykodna-aab743350/" class="social-link" target="_blank">LinkedIn</a>
-        </div>
+    <!-- Start Button (center bottom, styled as PNG dough roller) -->
+    <button class="start-btn" onclick="startGame()"></button>
+
+    <!-- Social Links (bottom-left) -->
+    <div class="social-links">
+        <a href="https://www.artstation.com/mariiavelykodna" target="_blank">ArtStation</a>
+        <a href="https://www.linkedin.com/in/mariia-velykodna-aab743350/" target="_blank">LinkedIn</a>
     </div>
 </div>
 
@@ -396,6 +317,8 @@
         </div>
         <div class="choices-overlay" id="choicesOverlay">
             <div class="choices-container" id="choicesContainer">
+                <div class="scene-text">Your scene text appears here</div>
+                <div class="choice-buttons">Choice buttons here</div>
                 <!-- Choice buttons will be dynamically added here -->
             </div>
         </div>
@@ -415,6 +338,8 @@
         </div>
     </div>
 </div>
+
+<audio id="bg-music" src="/bg.mp3" loop></audio>|
 
 <script>
     // 🎮 Interactive Cutscene Game - Main JavaScript Implementation
@@ -521,8 +446,12 @@
     async function startGame() {
         Logger.game('Starting new game');
 
+        const music = document.getElementById('bg-music');
+
         try {
             showLoading();
+
+            await music.play();
 
             // Load scene tree if not already loaded
             if (!GameState.sceneTree) {
@@ -669,15 +598,19 @@
         // Set image source
         imageElement.src = API_ENDPOINTS.image(sceneId);
 
-        // Start preloading video immediately
-        // Logger.video('Starting video preload while image displays');
-        // const videoPreloadPromise = preloadVideo(sceneId, videoName);
+        if (sceneId.toString().includes('0') || sceneId.toString().includes('3') || sceneId.toString().includes('6')) {
+            Logger.image('Starting 6-second timer');
 
-        Logger.image('Starting 3-second timer');
+            let timeLeft = 6;
+            timerText.textContent = timeLeft;
+        }
+        else {
+            Logger.image('Starting 3-second timer');
 
-        // Start 3-second countdown
-        let timeLeft = 3;
-        timerText.textContent = timeLeft;
+            // Start 3-second countdown
+            let timeLeft = 3;
+            timerText.textContent = timeLeft;
+        }
 
         // Wait for 3-second timer to complete
         await new Promise((resolve) => {
@@ -711,19 +644,30 @@
         timerElement.style.display = 'none';
 
         // Set image source
-        imageElement.src = API_ENDPOINTS.image(sceneId);
+        const source =API_ENDPOINTS.image(sceneId)
+        imageElement.src = source;
 
-        // Start preloading video immediately
-        // Logger.video('Starting video preload while image displays');
-        // const videoPreloadPromise = preloadVideo(sceneId, videoName);
+        let timeLeft;
 
-        Logger.image('Starting 3-second timer');
+        const scene = GameState.sceneTree.nodes[sceneId];
 
-        // Start 3-second countdown
-        let timeLeft = 3;
-        timerText.textContent = timeLeft;
+        if (scene.image.toString().includes('0')) {
+            // Logger.image(imageElement + ' - ' + source);
+            Logger.image('Starting 6-second timer');
 
-        // Wait for 3-second timer to complete
+            timeLeft = 6;
+            timerText.textContent = timeLeft;
+        }
+        else {
+            Logger.image('Starting 3-second timer');
+            // Logger.image(sceneId + ' - ' + scene.image.toString());
+
+            // Start 3-second countdown
+            timeLeft = 3;
+            timerText.textContent = timeLeft;
+        }
+
+        // Wait for timer to complete
         await new Promise((resolve) => {
             GameState.currentTimer = setInterval(() => {
                 timeLeft--;
@@ -739,90 +683,8 @@
                 }
             }, 1000);
         });
-
         await playVideo(sceneId);
-        // // Wait for video to finish loading (if not already loaded)
-        // Logger.video('Waiting for video preload to complete');
-        // await videoPreloadPromise;
-        //
-        // // Now play the preloaded video immediately
-        // Logger.video('Video preloaded, starting immediate playback');
-        // await playPreloadedVideo();
     }
-
-    // async function preloadVideo(sceneId, videoName) {
-    //     const videoElement = document.getElementById('game-video');
-    //
-    //     // Set video source and start loading
-    //     videoElement.src = API_ENDPOINTS.video(sceneId);
-    //
-    //     return new Promise((resolve, reject) => {
-    //         const onCanPlayThrough = () => {
-    //             Logger.video('Video preload complete - ready for immediate playback');
-    //             GameState.mediaLoaded = true;
-    //             cleanup();
-    //             resolve();
-    //         };
-    //
-    //         const onError = (error) => {
-    //             Logger.error('Video preload failed', error);
-    //             cleanup();
-    //             reject(error);
-    //         };
-    //
-    //         const cleanup = () => {
-    //             videoElement.removeEventListener('canplaythrough', onCanPlayThrough);
-    //             videoElement.removeEventListener('error', onError);
-    //         };
-    //
-    //         // Set up event listeners
-    //         videoElement.addEventListener('canplaythrough', onCanPlayThrough);
-    //         videoElement.addEventListener('error', onError);
-    //
-    //         // Start loading the video
-    //         videoElement.load();
-    //     });
-    // }
-
-    // async function playPreloadedVideo() {
-    //     const videoElement = document.getElementById('game-video');
-    //     const imageElement = document.getElementById('game-image');
-    //
-    //     // Hide image, show video
-    //     imageElement.style.display = 'none';
-    //     videoElement.style.display = 'block';
-    //
-    //     return new Promise((resolve, reject) => {
-    //         const onEnded = () => {
-    //             Logger.video('Preloaded video playback completed');
-    //             cleanup();
-    //             resolve();
-    //         };
-    //
-    //         const onError = (error) => {
-    //             Logger.error('Preloaded video playback failed', error);
-    //             cleanup();
-    //             reject(error);
-    //         };
-    //
-    //         const cleanup = () => {
-    //             videoElement.removeEventListener('ended', onEnded);
-    //             videoElement.removeEventListener('error', onError);
-    //         };
-    //
-    //         // Set up event listeners
-    //         videoElement.addEventListener('ended', onEnded);
-    //         videoElement.addEventListener('error', onError);
-    //
-    //         // Start playing immediately (video should be ready)
-    //         videoElement.play().then(() => {
-    //             Logger.video('Preloaded video started playing immediately');
-    //         }).catch(error => {
-    //             Logger.error('Failed to play preloaded video', error);
-    //             reject(error);
-    //         });
-    //     });
-    // }
 
     async function playVideo(sceneId) {
         Logger.video('Loading video for scene:', sceneId);

@@ -20,5 +20,7 @@ public class Scene {
     @JsonProperty("image")
     @Nullable
     private String imageName;
+    @Nullable
+    private String text;
     private List<Choice> choices;
 }
