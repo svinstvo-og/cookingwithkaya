@@ -3,6 +3,7 @@
   "nodes": {
     "video1": {
       "video": "1.mp4",
+      "text": "-Want to cook some soup today?",
       "choices": [
         {
           "text": "Yes, let's cook soup!",
@@ -15,10 +16,12 @@
       ]
     },
     "early_end": {
-      "image": "pumpkinSoup.jpg"
+      "image": "0early.jpg",
+      "video": "titles.mp4"
     },
     "video2": {
       "video": "2.mp4",
+      "text": "-Choose what meat to add",
       "choices": [
         {
           "text": "Choose Beef",
@@ -36,6 +39,7 @@
     },
     "video3_beef": {
       "image": "beef.jpg",
+      "text": "-Now choose main ingredient",
       "video": "3.mp4",
       "choices": [
         {
@@ -54,6 +58,7 @@
     },
     "video3_pork": {
       "image": "pork.jpg",
+      "text": "-Now choose main ingredient",
       "video": "3.mp4",
       "choices": [
         {
@@ -72,6 +77,7 @@
     },
     "video3_nomeat": {
       "image": "nomeat.jpg",
+      "text": "-Now choose main ingredient",
       "video": "3.mp4",
       "choices": [
         {
@@ -90,6 +96,7 @@
     },
     "video4_beef_beetroot": {
       "image": "beefBetroot.jpg",
+      "text": "-Choose additional ingredient",
       "video": "4.mp4",
       "choices": [
         {
@@ -109,6 +116,7 @@
     "video4_beef_eggs": {
       "image": "beefEgg.jpg",
       "video": "4.mp4",
+      "text": "-Choose additional ingredient",
       "choices": [
         {
           "text": "Keep as is (Beef & Eggs only)",
@@ -119,6 +127,7 @@
     "video4_beef_noodle": {
       "image": "beefNodle.jpg",
       "video": "4.mp4",
+      "text": "-Choose additional ingredient",
       "choices": [
         {
           "text": "Add Cream",
@@ -137,6 +146,7 @@
     "video4_beef_pumpkin": {
       "image": "beefPumpkin.jpg",
       "video": "4.mp4",
+      "text": "-Choose additional ingredient",
       "choices": [
         {
           "text": "Add Cream",
@@ -155,6 +165,7 @@
     "video4_pork_beetroot": {
       "image": "porkBeetroot.jpg",
       "video": "4.mp4",
+      "text": "-Choose additional ingredient",
       "choices": [
         {
           "text": "Add Cream",
@@ -172,6 +183,7 @@
     },
     "video4_pork_noodle": {
       "image": "porkNoodle.jpg",
+      "text": "-Choose additional ingredient",
       "video": "4.mp4",
       "choices": [
         {
@@ -190,6 +202,7 @@
     },
     "video4_pork_pumpkin": {
       "image": "porkPumpkin.jpg",
+      "text": "-Choose additional ingredient",
       "video": "4.mp4",
       "choices": [
         {
@@ -208,6 +221,7 @@
     },
     "video4_nomeat_beetroot": {
       "image": "nomeatBeetroot.jpg",
+      "text": "-Choose additional ingredient",
       "video": "4.mp4",
       "choices": [
         {
@@ -226,6 +240,7 @@
     },
     "video4_nomeat_noodle": {
       "image": "nomeatNoodle.jpg",
+      "text": "-Choose additional ingredient",
       "video": "4.mp4",
       "choices": [
         {
@@ -244,6 +259,7 @@
     },
     "video4_nomeat_pumpkin": {
       "image": "nomeatPumpkin.jpg",
+      "text": "-Choose additional ingredient",
       "video": "4.mp4",
       "choices": [
         {

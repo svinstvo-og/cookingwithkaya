@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Cutscene Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Sansation", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .start-btn {
+            background: url("https://imgur.com/a/cgae9e9") no-repeat center center;
+            background-size: contain;
+            opacity: 0;
+            width: 600px;   /* adjust to your PNG dimensions */
+            height: 80px;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 100px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .main-menu {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: url("https://i.postimg.cc/BngwzpwN/Light-Brown-Cream-and-Peach-Modern-Chic-Personal-Wall-Calendar.jpg") no-repeat center center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            overflow: hidden;
+        }
+
+        .social-links {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+
+        .social-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 36px;
+            transition: color 0.2s;
+            font-family: "Caveat Brush", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .social-links a:hover {
+            color: #fff;
+        }
+
+        /* Game Screen Styles */
+        .game-screen {
+            display: none;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            object-fit: cover;
+        }
+
+        #game-video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .choices-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            display: flex;              /* flex layout */
+            align-items: center;        /* center vertically */
+            justify-content: center;    /* center horizontally */
+
+            backdrop-filter: blur(8px); /* blur background */
+            background: rgba(0, 0, 0, 0.4); /* dark overlay */
+            z-index: 1000;
+            visibility: hidden;         /* hide by default */
+            opacity: 0;                 /* transition option */
+            transition: opacity 0.3s ease;
+            padding: 20px;              /* add padding for responsive spacing */
+        }
+
+        .scene-text {
+            position: absolute;   /* or fixed, see note below */
+            bottom: 20px;         /* distance from bottom of screen */
+            left: 50%;
+            transform: translateX(-50%); /* centers horizontally */
+
+            color: white;
+            font-size: 2.5rem;
+            line-height: 1.4;
+            text-align: center;
+            margin: 30px; /* reset old margins */
+        }
+
+        .choices-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .choices-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;  /* spread buttons evenly across width */
+            align-items: center;            /* center vertically within container */
+            width: 100%;
+            max-width: 1200px;             /* limit maximum width */
+            gap: 20px;                     /* spacing between buttons */
+        }
+
+        /* Handle 2 choices - both in one row */
+        .choices-container.two-choices {
+            justify-content: space-evenly;
+        }
+
+        .choices-container.two-choices .choice-btn {
+            flex: 0 1 auto;
+            min-width: 200px;
+            max-width: 300px;
+        }
+
+        /* Handle 3 choices - 2 on first row, 1 centered on second */
+        .choices-container.three-choices {
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .choices-container.three-choices .choice-row {
+            display: flex;
+            justify-content: space-evenly;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .choices-container.three-choices .choice-row.first-row {
+            justify-content: space-evenly;
+        }
+
+        .choices-container.three-choices .choice-row.second-row {
+            justify-content: center;
+        }
+
+        .choice-btn {
+            padding: 15px 30px;
+            color: white;
+            font-size: 2.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.29) 0%, rgba(0, 0, 0, 0.29) 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(0,0,0,0.7);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            z-index: 10;
+            margin: 20px;
+        }
+
+        .modal h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #cccccc;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Loading Styles */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 2.5rem;
+            }
+
+            .choices-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .choices-container.two-choices {
+                flex-direction: column;
+            }
+
+            .choices-container.three-choices .choice-row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .choice-btn {
+                width: 100%;
+                max-width: 300px;
+                font-size: 1.5rem;
+            }
+
+            .modal-content {
+                margin: 20% auto;
+                width: 95%;
+            }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- Loading Indicator -->
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+</div>
+
+<!-- Main Menu -->
+<!-- Main Menu -->
+<div class="main-menu" id="mainMenu">
+    <!-- Start Button (center bottom, styled as PNG dough roller) -->
+    <button class="start-btn" onclick="startGame()"></button>
+
+    <!-- Social Links (bottom-left) -->
+    <div class="social-links">
+        <a href="https://www.artstation.com/mariiavelykodna" target="_blank">ArtStation</a>
+        <a href="https://www.linkedin.com/in/mariia-velykodna-aab743350/" target="_blank">LinkedIn</a>
+    </div>
+</div>
+
+<!-- Game Screen -->
+<div class="game-screen" id="gameScreen">
+<!--    <button class="back-btn" onclick="backToMenu()">← Back to Menu</button>-->
+    <div class="video-container">
+        <video autoplay playsinline id="game-video">
+            Your browser does not support the video tag.
+        </video>
+        <img id="game-image" style="display: none; width: 100%; height: 100%; object-fit: contain;" alt="Game scene">
+        <div id="image-timer" style="display: none; position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.7); padding: 10px 15px; border-radius: 5px; color: white; z-index: 5;">
+            <span id="timer-text">3</span>
+        </div>
+        <div class="choices-overlay" id="choicesOverlay">
+            <div class="choices-container" id="choicesContainer">
+                <div class="choice-buttons" id="choiceButtons">
+                    <!-- Choice buttons will be dynamically added here -->
+                </div>
+                <div class="scene-text" id="sceneText" style="display: none;">
+                    <!-- Scene text will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Achievements Screen -->
+<div class="achievements-screen" id="achievementsScreen">
+    <button class="back-btn" onclick="backToMenu()">← Back to Menu</button>
+    <div class="container">
+        <div class="achievements-header">
+            <h2>Achievements</h2>
+            <p>Unlock achievements by making different choices in your adventure!</p>
+        </div>
+        <div class="achievements-grid" id="achievementsGrid">
+            <!-- Achievement cards will be dynamically added here -->
+        </div>
+    </div>
+</div>
+
+<audio id="bg-music" src="/bg.mp3" loop></audio>|
+
+<script>
+    // 🎮 Interactive Cutscene Game - Main JavaScript Implementation
+    // Simplified, debug-friendly version as per PRD requirements
+
+    // 🚀 Application State Management
+    const GameState = {
+        currentScene: null,
+        sceneTree: null,
+        isPlaying: false,
+        mediaLoaded: false,
+        currentTimer: null
+    };
+
+    // 🌐 API Configuration
+    const API_BASE = '/api'; // Adjust this to match your backend URL
+    const API_ENDPOINTS = {
+        tree: `${API_BASE}/tree`,
+        image: (sceneId) => `${API_BASE}/image/${sceneId}`,
+        video: (sceneId) => `${API_BASE}/video/${sceneId}`
+    };
+
+    // 🎯 Debug Logging Utilities
+    const Logger = {
+        lifecycle: (message, data) => console.log(`🚀 [LIFECYCLE] ${message}`, data || ''),
+        game: (message, data) => console.log(`🎮 [GAME] ${message}`, data || ''),
+        video: (message, data) => console.log(`📹 [VIDEO] ${message}`, data || ''),
+        image: (message, data) => console.log(`🖼️ [IMAGE] ${message}`, data || ''),
+        choice: (message, data) => console.log(`🎯 [CHOICE] ${message}`, data || ''),
+        api: (message, data) => console.log(`🌐 [API] ${message}`, data || ''),
+        error: (message, error) => console.error(`❌ [ERROR] ${message}`, error || '')
+    };
+
+    // 🚀 Application Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+        Logger.lifecycle('Application initialized');
+        initializeGame();
+    });
+
+    function initializeGame() {
+        Logger.lifecycle('Initializing game systems');
+
+        // Get DOM elements
+        const elements = getDOMElements();
+        if (!elements.isValid) {
+            Logger.error('Failed to initialize - missing DOM elements');
+            return;
+        }
+
+        // Set up event handlers
+        setupEventHandlers();
+
+        // Show main menu
+        showMainMenu();
+
+        Logger.lifecycle('Game initialization complete');
+    }
+
+    function getDOMElements() {
+        const elements = {
+            mainMenu: document.getElementById('mainMenu'),
+            gameScreen: document.getElementById('gameScreen'),
+            achievementsScreen: document.getElementById('achievementsScreen'),
+            loading: document.getElementById('loading'),
+            gameVideo: document.getElementById('game-video'),
+            gameImage: document.getElementById('game-image'),
+            imageTimer: document.getElementById('image-timer'),
+            timerText: document.getElementById('timer-text'),
+            choicesOverlay: document.getElementById('choicesOverlay'),
+            choicesContainer: document.getElementById('choicesContainer')
+        };
+
+        // Validate all elements exist
+        elements.isValid = Object.values(elements).every(el => el !== null);
+
+        if (!elements.isValid) {
+            Logger.error('Missing required DOM elements');
+        }
+
+        return elements;
+    }
+
+    function setupEventHandlers() {
+        Logger.lifecycle('Setting up event handlers');
+
+        const video = document.getElementById('game-video');
+        if (video) {
+            video.addEventListener('loadstart', () => Logger.video('Video load started'));
+            video.addEventListener('canplay', () => Logger.video('Video can play'));
+            video.addEventListener('canplaythrough', () => {
+                Logger.video('Video fully loaded');
+                GameState.mediaLoaded = true;
+            });
+            video.addEventListener('ended', () => {
+                Logger.video('Video playback ended');
+                onMediaComplete();
+            });
+            video.addEventListener('error', (e) => Logger.error('Video error', e));
+        }
+    }
+
+    // 🎮 Game Flow Functions
+
+    async function startGame() {
+        Logger.game('Starting new game');
+
+        const music = document.getElementById('bg-music');
+
+        try {
+            showLoading();
+
+            await music.play();
+
+            // Load scene tree if not already loaded
+            if (!GameState.sceneTree) {
+                Logger.api('Loading scene tree from backend');
+                GameState.sceneTree = await loadSceneTree();
+                Logger.game('Scene tree loaded successfully', GameState.sceneTree);
+            }
+
+            // Start from the first scene
+            const startScene = GameState.sceneTree.start;
+            Logger.game('Starting from scene:', startScene);
+
+            hideLoading();
+            showGameScreen();
+
+            // Load and play first scene
+            await loadScene(startScene);
+
+        } catch (error) {
+            Logger.error('Failed to start game', error);
+            hideLoading();
+            alert('Failed to start game. Check console for details.');
+        }
+    }
+
+    async function loadSceneTree() {
+        Logger.api('Fetching scene tree from:', API_ENDPOINTS.tree);
+
+        try {
+            const response = await fetch(API_ENDPOINTS.tree);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            Logger.api('Scene tree received', data);
+            return data;
+
+        } catch (error) {
+            Logger.error('Failed to load scene tree', error);
+
+            // Return mock data for development/testing
+            Logger.game('Using mock scene tree for development');
+            return getMockSceneTree();
+        }
+    }
+
+    function getMockSceneTree() {
+        return {
+            start: "intro",
+            nodes: {
+                "intro": {
+                    image: "intro.jpg",
+                    video: "intro.mp4",
+                    choices: [
+                        { text: "Continue the adventure", next: "scene1" },
+                        { text: "Take a different path", next: "scene2" }
+                    ]
+                },
+                "scene1": {
+                    video: "scene1.mp4",
+                    choices: [
+                        { text: "Make choice A", next: "ending1" },
+                        { text: "Make choice B", next: "ending2" }
+                    ]
+                },
+                "scene2": {
+                    image: "scene2.jpg",
+                    choices: [
+                        { text: "Go left", next: "ending1" },
+                        { text: "Go right", next: "ending3" }
+                    ]
+                },
+                "ending1": {
+                    video: "ending1.mp4"
+                },
+                "ending2": {
+                    image: "ending2.jpg"
+                },
+                "ending3": {
+                    video: "ending3.mp4"
+                }
+            },
+            endings: ["ending1", "ending2", "ending3"]
+        };
+    }
+
+    async function loadScene(sceneId) {
+        Logger.game('Loading scene:', sceneId);
+
+        GameState.currentScene = sceneId;
+        const scene = GameState.sceneTree.nodes[sceneId];
+
+        if (!scene) {
+            Logger.error('Scene not found:', sceneId);
+            endGame();
+            return;
+        }
+
+        Logger.game('Scene data:', scene);
+
+        // Hide any existing choices
+        hideChoices();
+
+        // Reset media loaded state
+        GameState.mediaLoaded = false;
+
+        try {
+            // If scene has both image and video, handle them concurrently
+            if (scene.image && scene.video) {
+                Logger.game('Scene has both image and video - starting concurrent loading');
+                await displayImageAndPreloadVideo(sceneId, scene.image, scene.video);
+            }
+            // If only image
+            else if (scene.image) {
+                await displayImage(sceneId); //, scene.image
+            }
+            // If only video
+            else if (scene.video) {
+                await playVideo(sceneId, scene.video);
+            }
+            // If no media at all, proceed directly to choices or end
+            else {
+                Logger.game('No media in scene, proceeding to choices');
+                onMediaComplete();
+            }
+
+        } catch (error) {
+            Logger.error('Failed to load scene media', error);
+            onMediaComplete(); // Proceed anyway
+        }
+    }
+
+    async function displayImage(sceneId) {
+        Logger.image('Displaying image:', sceneId);
+
+        const imageElement = document.getElementById('game-image');
+        const timerElement = document.getElementById('image-timer');
+        const timerText = document.getElementById('timer-text');
+
+        imageElement.style.display = 'block';
+        timerElement.style.display = 'none';
+
+        // Set image source
+        imageElement.src = API_ENDPOINTS.image(sceneId);
+
+        if (sceneId.toString().includes('0') || sceneId.toString().includes('3') || sceneId.toString().includes('6')) {
+            Logger.image('Starting 6-second timer');
+
+            let timeLeft = 6;
+            timerText.textContent = timeLeft;
+        }
+        else {
+            Logger.image('Starting 3-second timer');
+
+            // Start 3-second countdown
+            let timeLeft = 3;
+            timerText.textContent = timeLeft;
+        }
+
+        // Wait for 3-second timer to complete
+        await new Promise((resolve) => {
+            GameState.currentTimer = setInterval(() => {
+                timeLeft--;
+                timerText.textContent = timeLeft;
+                Logger.image('Timer tick:', timeLeft);
+
+                if (timeLeft <= 0) {
+                    clearInterval(GameState.currentTimer);
+                    timerElement.style.display = 'none';
+                    imageElement.style.display = 'none';
+                    Logger.image('Image display timer complete');
+                    resolve();
+                }
+            }, 1000);
+        });
+    }
+
+    async function displayImageAndPreloadVideo(sceneId) {
+        Logger.image('Displaying image and preloading video for scene:', sceneId);
+
+        const imageElement = document.getElementById('game-image');
+        const videoElement = document.getElementById('game-video');
+        const timerElement = document.getElementById('image-timer');
+        const timerText = document.getElementById('timer-text');
+
+        // Hide video, show image
+        videoElement.style.display = 'none';
+        imageElement.style.display = 'block';
+        timerElement.style.display = 'none';
+
+        // Set image source
+        const source =API_ENDPOINTS.image(sceneId)
+        imageElement.src = source;
+
+        let timeLeft;
+
+        const scene = GameState.sceneTree.nodes[sceneId];
+
+        if (scene.image.toString().includes('0')) {
+            // Logger.image(imageElement + ' - ' + source);
+            Logger.image('Starting 6-second timer');
+
+            timeLeft = 6;
+            timerText.textContent = timeLeft;
+        }
+        else {
+            Logger.image('Starting 3-second timer');
+            // Logger.image(sceneId + ' - ' + scene.image.toString());
+
+            // Start 3-second countdown
+            timeLeft = 3;
+            timerText.textContent = timeLeft;
+        }
+
+        // Wait for timer to complete
+        await new Promise((resolve) => {
+            GameState.currentTimer = setInterval(() => {
+                timeLeft--;
+                timerText.textContent = timeLeft;
+                Logger.image('Timer tick:', timeLeft);
+
+                if (timeLeft <= 0) {
+                    clearInterval(GameState.currentTimer);
+                    timerElement.style.display = 'none';
+                    imageElement.style.display = 'none';
+                    Logger.image('Image display timer complete');
+                    resolve();
+                }
+            }, 1000);
+        });
+        await playVideo(sceneId);
+    }
+
+    async function playVideo(sceneId) {
+        Logger.video('Loading video for scene:', sceneId);
+
+        const videoElement = document.getElementById('game-video');
+        const imageElement = document.getElementById('game-image');
+
+        // Hide image, show video
+        imageElement.style.display = 'none';
+        videoElement.style.display = 'block';
+
+        // Set video source
+        videoElement.src = API_ENDPOINTS.video(sceneId);
+
+        return new Promise((resolve, reject) => {
+            // Wait for video to be fully loaded before playing
+            const onCanPlayThrough = () => {
+                Logger.video('Video fully loaded, starting playback');
+                videoElement.play().then(() => {
+                    Logger.video('Video playback started');
+                }).catch(error => {
+                    Logger.error('Video play failed', error);
+                    reject(error);
+                });
+            };
+
+            const onEnded = () => {
+                Logger.video('Video playback completed');
+                cleanup();
+                resolve();
+            };
+
+            const onError = (error) => {
+                Logger.error('Video loading failed', error);
+                cleanup();
+                reject(error);
+            };
+
+            const cleanup = () => {
+                videoElement.removeEventListener('canplaythrough', onCanPlayThrough);
+                videoElement.removeEventListener('ended', onEnded);
+                videoElement.removeEventListener('error', onError);
+            };
+
+            // Set up event listeners
+            videoElement.addEventListener('canplaythrough', onCanPlayThrough);
+            videoElement.addEventListener('ended', onEnded);
+            videoElement.addEventListener('error', onError);
+
+            // Load the video
+            videoElement.load();
+        });
+    }
+
+    function onMediaComplete() {
+        Logger.game('Media playback complete for scene:', GameState.currentScene);
+
+        const scene = GameState.sceneTree.nodes[GameState.currentScene];
+
+        if (scene.choices && scene.choices.length > 0) {
+            Logger.game('Showing choices:', scene.choices);
+            showChoices(scene.choices);
+        } else {
+            Logger.game('No choices available, ending game');
+            setTimeout(() => endGame(), 1000); // Brief pause before ending
+        }
+    }
+
+    function showChoices(choices) {
+        Logger.choice('Displaying choices:', choices);
+
+        const overlay = document.getElementById('choicesOverlay');
+        const container = document.getElementById('choicesContainer');
+        const sceneTextElement = document.getElementById('sceneText');
+        const choiceButtonsContainer = document.getElementById('choiceButtons');
+
+        // Clear existing choices
+        if (choiceButtonsContainer) {
+            choiceButtonsContainer.innerHTML = '';
+        } else {
+            container.innerHTML = '';
+        }
+
+        const scene = GameState.sceneTree.nodes[GameState.currentScene];
+        const hasSceneText = scene && scene.text;
+
+        sceneTextElement.textContent = scene.text;
+        sceneTextElement.style.display = 'block';
+        // Logger.choice('Scene text displayed:', scene.text);
+
+        // Create choice buttons
+        choices.forEach((choice, index) => {
+            const button = document.createElement('button');
+            button.className = 'choice-btn';
+            button.textContent = choice.text;
+            button.onclick = () => selectChoice(choice, index);
+            const buttonContainer = choiceButtonsContainer || container;
+            buttonContainer.appendChild(button);
+
+            Logger.choice(`Choice ${index} created:`, choice.text);
+        });
+
+        // Show overlay
+        overlay.classList.add('active');
+        Logger.choice('Choices overlay activated');
+    }
+
+    function hideChoices() {
+        const overlay = document.getElementById('choicesOverlay');
+        overlay.classList.remove('active');
+        Logger.choice('Choices overlay hidden');
+    }
+
+    function selectChoice(choice, index) {
+        Logger.choice('Choice selected:', { index, text: choice.text, next: choice.next });
+
+        hideChoices();
+
+        // Navigate to next scene
+        if (choice.next) {
+            loadScene(choice.next);
+        } else {
+            Logger.game('Choice has no next scene, ending game');
+            endGame();
+        }
+    }
+
+    function endGame() {
+        Logger.game('Game ended');
+
+        // Clean up any running timers
+        if (GameState.currentTimer) {
+            clearInterval(GameState.currentTimer);
+            GameState.currentTimer = null;
+        }
+
+        // Reset game state
+        GameState.currentScene = null;
+        GameState.isPlaying = false;
+
+        // Show main menu after brief delay
+        setTimeout(() => {
+            showMainMenu();
+            Logger.game('Returned to main menu');
+        }, 2000);
+    }
+
+    // 🎨 UI Management Functions
+
+    function showMainMenu() {
+        Logger.lifecycle('Showing main menu');
+        hideAllScreens();
+        document.getElementById('mainMenu').style.display = 'flex';
+    }
+
+    function showGameScreen() {
+        Logger.lifecycle('Showing game screen');
+        hideAllScreens();
+        document.getElementById('gameScreen').style.display = 'block';
+        GameState.isPlaying = true;
+    }
+
+    function showAchievements() {
+        Logger.lifecycle('Showing achievements (placeholder)');
+        hideAllScreens();
+        document.getElementById('achievementsScreen').style.display = 'block';
+        // Note: Achievement system removed as per PRD simplification
+    }
+
+    function showLoading() {
+        Logger.lifecycle('Showing loading indicator');
+        document.getElementById('loading').style.display = 'block';
+    }
+
+    function hideLoading() {
+        Logger.lifecycle('Hiding loading indicator');
+        document.getElementById('loading').style.display = 'none';
+    }
+
+    function hideAllScreens() {
+        const screens = ['mainMenu', 'gameScreen', 'achievementsScreen'];
+        screens.forEach(screenId => {
+            const screen = document.getElementById(screenId);
+            if (screen) screen.style.display = 'none';
+        });
+    }
+
+    function backToMenu() {
+        Logger.lifecycle('User requested return to menu');
+
+        // Stop any media playback
+        const video = document.getElementById('game-video');
+        if (video) {
+            video.pause();
+            video.src = '';
+        }
+
+        // Clear any timers
+        if (GameState.currentTimer) {
+            clearInterval(GameState.currentTimer);
+            GameState.currentTimer = null;
+        }
+
+        // Reset state and show menu
+        GameState.isPlaying = false;
+        GameState.currentScene = null;
+        showMainMenu();
+    }
+
+    // 🔧 Utility Functions
+
+    function handleError(context, error) {
+        Logger.error(`Error in ${context}:`, error);
+
+        // Show user-friendly error message
+        alert(`Something went wrong: ${error.message || 'Unknown error'}`);
+
+        // Return to main menu on critical errors
+        if (GameState.isPlaying) {
+            backToMenu();
+        }
+    }
+
+    // 🌐 Global Error Handler
+    window.addEventListener('error', function(event) {
+        Logger.error('Unhandled JavaScript error:', {
+            message: event.message,
+            filename: event.filename,
+            line: event.lineno,
+            column: event.colno,
+            error: event.error
+        });
+    });
+
+    // 🚀 Export for debugging (if needed)
+    if (typeof window !== 'undefined') {
+        window.GameDebug = {
+            state: GameState,
+            logger: Logger,
+            loadScene: loadScene,
+            endGame: endGame,
+            backToMenu: backToMenu
+        };
+        Logger.lifecycle('Debug interface attached to window.GameDebug');
+    }
+
+    Logger.lifecycle('JavaScript module loaded successfully');
+</script>
+</body>
+</html>

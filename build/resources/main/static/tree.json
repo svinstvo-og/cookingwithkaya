@@ -1,0 +1,699 @@
+{
+  "start": "video1",
+  "nodes": {
+    "video1": {
+      "video": "1.mp4",
+      "text": "-Want to cook some soup today?",
+      "choices": [
+        {
+          "text": "Yes, let's cook soup!",
+          "next": "video2"
+        },
+        {
+          "text": "No, maybe another time",
+          "next": "early_end"
+        }
+      ]
+    },
+    "early_end": {
+      "image": "0early.jpg",
+      "video": "titles.mp4"
+    },
+    "video2": {
+      "video": "2.mp4",
+      "text": "-Choose what meat to add",
+      "choices": [
+        {
+          "text": "Choose Beef",
+          "next": "video3_beef"
+        },
+        {
+          "text": "Choose Pork",
+          "next": "video3_pork"
+        },
+        {
+          "text": "Choose No Meat",
+          "next": "video3_nomeat"
+        }
+      ]
+    },
+    "video3_beef": {
+      "image": "beef.jpg",
+      "text": "-Now choose main ingredient",
+      "video": "3.mp4",
+      "choices": [
+        {
+          "text": "Add Beetroot",
+          "next": "video4_beef_beetroot"
+        },
+        {
+          "text": "Add Noodles",
+          "next": "video4_beef_noodle"
+        },
+        {
+          "text": "Add Pumpkin",
+          "next": "video4_beef_pumpkin"
+        }
+      ]
+    },
+    "video3_pork": {
+      "image": "pork.jpg",
+      "text": "-Now choose main ingredient",
+      "video": "3.mp4",
+      "choices": [
+        {
+          "text": "Add Beetroot",
+          "next": "video4_pork_beetroot"
+        },
+        {
+          "text": "Add Noodles",
+          "next": "video4_pork_noodle"
+        },
+        {
+          "text": "Add Pumpkin",
+          "next": "video4_pork_pumpkin"
+        }
+      ]
+    },
+    "video3_nomeat": {
+      "image": "nomeat.jpg",
+      "text": "-Now choose main ingredient",
+      "video": "3.mp4",
+      "choices": [
+        {
+          "text": "Add Beetroot",
+          "next": "video4_nomeat_beetroot"
+        },
+        {
+          "text": "Add Noodles",
+          "next": "video4_nomeat_noodle"
+        },
+        {
+          "text": "Add Pumpkin",
+          "next": "video4_nomeat_pumpkin"
+        }
+      ]
+    },
+    "video4_beef_beetroot": {
+      "image": "beefBetroot.jpg",
+      "text": "-Choose additional ingredient",
+      "video": "4.mp4",
+      "choices": [
+        {
+          "text": "Add Cream",
+          "next": "video5_beef_beetroot_cream"
+        },
+        {
+          "text": "Add Eggs",
+          "next": "video5_beef_beetroot_eggs"
+        },
+        {
+          "text": "Add Vegetables",
+          "next": "video5_beef_beetroot_vegies"
+        }
+      ]
+    },
+    "video4_beef_eggs": {
+      "image": "beefEgg.jpg",
+      "video": "4.mp4",
+      "text": "-Choose additional ingredient",
+      "choices": [
+        {
+          "text": "Keep as is (Beef & Eggs only)",
+          "next": "video5_beef_eggs"
+        }
+      ]
+    },
+    "video4_beef_noodle": {
+      "image": "beefNodle.jpg",
+      "video": "4.mp4",
+      "text": "-Choose additional ingredient",
+      "choices": [
+        {
+          "text": "Add Cream",
+          "next": "video5_beef_noodle_cream"
+        },
+        {
+          "text": "Add Eggs",
+          "next": "video5_beef_noodle_eggs"
+        },
+        {
+          "text": "Add Vegetables",
+          "next": "video5_beef_noodle_vegies"
+        }
+      ]
+    },
+    "video4_beef_pumpkin": {
+      "image": "beefPumpkin.jpg",
+      "video": "4.mp4",
+      "text": "-Choose additional ingredient",
+      "choices": [
+        {
+          "text": "Add Cream",
+          "next": "video5_beef_pumpkin_cream"
+        },
+        {
+          "text": "Add Eggs",
+          "next": "video5_beef_pumpkin_eggs"
+        },
+        {
+          "text": "Add Vegetables",
+          "next": "video5_beef_pumpkin_vegies"
+        }
+      ]
+    },
+    "video4_pork_beetroot": {
+      "image": "porkBeetroot.jpg",
+      "video": "4.mp4",
+      "text": "-Choose additional ingredient",
+      "choices": [
+        {
+          "text": "Add Cream",
+          "next": "video5_pork_beetroot_cream"
+        },
+        {
+          "text": "Add Eggs",
+          "next": "video5_pork_beetroot_eggs"
+        },
+        {
+          "text": "Add Vegetables",
+          "next": "video5_pork_beetroot_vegies"
+        }
+      ]
+    },
+    "video4_pork_noodle": {
+      "image": "porkNoodle.jpg",
+      "text": "-Choose additional ingredient",
+      "video": "4.mp4",
+      "choices": [
+        {
+          "text": "Add Cream",
+          "next": "video5_pork_noodle_cream"
+        },
+        {
+          "text": "Add Eggs",
+          "next": "video5_pork_noodle_eggs"
+        },
+        {
+          "text": "Add Vegetables",
+          "next": "video5_pork_noodle_vegies"
+        }
+      ]
+    },
+    "video4_pork_pumpkin": {
+      "image": "porkPumpkin.jpg",
+      "text": "-Choose additional ingredient",
+      "video": "4.mp4",
+      "choices": [
+        {
+          "text": "Add Cream",
+          "next": "video5_pork_pumpkin_cream"
+        },
+        {
+          "text": "Add Eggs",
+          "next": "video5_pork_pumpkin_eggs"
+        },
+        {
+          "text": "Add Vegetables",
+          "next": "video5_pork_pumpkin_vegies"
+        }
+      ]
+    },
+    "video4_nomeat_beetroot": {
+      "image": "nomeatBeetroot.jpg",
+      "text": "-Choose additional ingredient",
+      "video": "4.mp4",
+      "choices": [
+        {
+          "text": "Add Cream",
+          "next": "video5_nomeat_beetroot_cream"
+        },
+        {
+          "text": "Add Eggs",
+          "next": "video5_nomeat_beetroot_eggs"
+        },
+        {
+          "text": "Add Vegetables",
+          "next": "video5_nomeat_beetroot_vegies"
+        }
+      ]
+    },
+    "video4_nomeat_noodle": {
+      "image": "nomeatNoodle.jpg",
+      "text": "-Choose additional ingredient",
+      "video": "4.mp4",
+      "choices": [
+        {
+          "text": "Add Cream",
+          "next": "video5_nomeat_noodle_cream"
+        },
+        {
+          "text": "Add Eggs",
+          "next": "video5_nomeat_noodle_eggs"
+        },
+        {
+          "text": "Add Vegetables",
+          "next": "video5_nomeat_noodle_vegies"
+        }
+      ]
+    },
+    "video4_nomeat_pumpkin": {
+      "image": "nomeatPumpkin.jpg",
+      "text": "-Choose additional ingredient",
+      "video": "4.mp4",
+      "choices": [
+        {
+          "text": "Add Cream",
+          "next": "video5_nomeat_pumpkin_cream"
+        },
+        {
+          "text": "Add Eggs",
+          "next": "video5_nomeat_pumpkin_eggs"
+        },
+        {
+          "text": "Add Vegetables",
+          "next": "video5_nomeat_pumpkin_vegies"
+        }
+      ]
+    },
+    "video5_beef_eggs": {
+      "image": "beefEgg.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_beef_eggs"
+        }
+      ]
+    },
+    "video5_beef_beetroot_cream": {
+      "image": "beefBeetrootCream.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_beef_beetroot_cream"
+        }
+      ]
+    },
+    "video5_beef_beetroot_eggs": {
+      "image": "beefBeetrootEggs.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_beef_beetroot_eggs"
+        }
+      ]
+    },
+    "video5_beef_beetroot_vegies": {
+      "image": "beefBeetrootVegies.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_beef_beetroot_vegies"
+        }
+      ]
+    },
+    "video5_beef_noodle_cream": {
+      "image": "beefNoodleCream.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_beef_noodle_cream"
+        }
+      ]
+    },
+    "video5_beef_noodle_eggs": {
+      "image": "beefNoodleEggs.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_beef_noodle_eggs"
+        }
+      ]
+    },
+    "video5_beef_noodle_vegies": {
+      "image": "beefNoodleVegies.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_beef_noodle_vegies"
+        }
+      ]
+    },
+    "video5_beef_pumpkin_cream": {
+      "image": "beefpumpkinCream.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_beef_pumpkin_cream"
+        }
+      ]
+    },
+    "video5_beef_pumpkin_eggs": {
+      "image": "beefPumpkinEggs.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_beef_pumpkin_eggs"
+        }
+      ]
+    },
+    "video5_beef_pumpkin_vegies": {
+      "image": "beefPumpkinVegies.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_beef_pumpkin_vegies"
+        }
+      ]
+    },
+    "video5_pork_beetroot_cream": {
+      "image": "porkBeetrootCream.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_pork_beetroot_cream"
+        }
+      ]
+    },
+    "video5_pork_beetroot_eggs": {
+      "image": "porkBeetrootEggs.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_pork_beetroot_eggs"
+        }
+      ]
+    },
+    "video5_pork_beetroot_vegies": {
+      "image": "porkBeetrootVegies.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_pork_beetroot_vegies"
+        }
+      ]
+    },
+    "video5_pork_noodle_cream": {
+      "image": "porkNoodleCream.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_pork_noodle_cream"
+        }
+      ]
+    },
+    "video5_pork_noodle_eggs": {
+      "image": "porkNoodleEggs.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_pork_noodle_eggs"
+        }
+      ]
+    },
+    "video5_pork_noodle_vegies": {
+      "image": "porkNoodleVegies.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_pork_noodle_vegies"
+        }
+      ]
+    },
+    "video5_pork_pumpkin_cream": {
+      "image": "porkPumpkinCream.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_pork_pumpkin_cream"
+        }
+      ]
+    },
+    "video5_pork_pumpkin_eggs": {
+      "image": "porkPumpkinEggs.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_pork_pumpkin_eggs"
+        }
+      ]
+    },
+    "video5_pork_pumpkin_vegies": {
+      "image": "porkPumpkinVegies.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_pork_pumpkin_vegies"
+        }
+      ]
+    },
+    "video5_nomeat_beetroot_cream": {
+      "image": "nomeatBeetrootCream.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_nomeat_beetroot_cream"
+        }
+      ]
+    },
+    "video5_nomeat_beetroot_eggs": {
+      "image": "nomeatBeetrootEggs.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_nomeat_beetroot_eggs"
+        }
+      ]
+    },
+    "video5_nomeat_beetroot_vegies": {
+      "image": "nomeatBeetrootVegies.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_nomeat_beetroot_vegies"
+        }
+      ]
+    },
+    "video5_nomeat_noodle_cream": {
+      "image": "nomeatNoodleCream.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_nomeat_noodle_cream"
+        }
+      ]
+    },
+    "video5_nomeat_noodle_eggs": {
+      "image": "nomeatNoodleEggs.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_nomeat_noodle_eggs"
+        }
+      ]
+    },
+    "video5_nomeat_noodle_vegies": {
+      "image": "nomeatNoodleVegies.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_nomeat_noodle_vegies"
+        }
+      ]
+    },
+    "video5_nomeat_pumpkin_cream": {
+      "image": "nomeatPumpkinCream.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_nomeat_pumpkin_cream"
+        }
+      ]
+    },
+    "video5_nomeat_pumpkin_eggs": {
+      "image": "nomeatPumpkinEggs.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_nomeat_pumpkin_eggs"
+        }
+      ]
+    },
+    "video5_nomeat_pumpkin_vegies": {
+      "image": "nomeatPumpkinVegies.jpg",
+      "video": "5.mp4",
+      "choices": [
+        {
+          "text": "Complete Cooking",
+          "next": "final_nomeat_pumpkin_vegies"
+        }
+      ]
+    },
+    "final_beef_beetroot_cream": {
+      "image": "630.jpg",
+      "video": "titles.mp4"
+    },
+    "final_beef_beetroot_eggs": {
+      "image": "603.jpg",
+      "video": "titles.mp4"
+    },
+    "final_beef_beetroot_vegies": {
+      "image": "0borshch.jpg",
+      "video": "titles.mp4"
+    },
+    "final_beef_noodle_cream": {
+      "image": "333.jpg",
+      "video": "titles.mp4"
+    },
+    "final_beef_noodle_eggs": {
+      "image": "306.jpg",
+      "video": "titles.mp4"
+    },
+    "final_beef_noodle_vegies": {
+      "image": "333.jpg",
+      "video": "titles.mp4"
+    },
+    "final_beef_pumpkin_cream": {
+      "image": "360.jpg",
+      "video": "titles.mp4"
+    },
+    "final_beef_pumpkin_eggs": {
+      "image": "333.jpg",
+      "video": "titles.mp4"
+    },
+    "final_beef_pumpkin_vegies": {
+      "image": "333.jpg",
+      "video": "titles.mp4"
+    },
+    "final_pork_beetroot_cream": {
+      "image": "333.jpg",
+      "video": "titles.mp4"
+    },
+    "final_pork_beetroot_eggs": {
+      "image": "306.jpg",
+      "video": "titles.mp4"
+    },
+    "final_pork_beetroot_vegies": {
+      "image": "603.jpg",
+      "video": "titles.mp4"
+    },
+    "final_pork_noodle_cream": {
+      "image": "036.jpg",
+      "video": "titles.mp4"
+    },
+    "final_pork_noodle_eggs": {
+      "image": "0ramen.jpg",
+      "video": "titles.mp4"
+    },
+    "final_pork_noodle_vegies": {
+      "image": "360.jpg",
+      "video": "titles.mp4"
+    },
+    "final_pork_pumpkin_cream": {
+      "image": "036.jpg",
+      "video": "titles.mp4"
+    },
+    "final_pork_pumpkin_eggs": {
+      "image": "036.jpg",
+      "video": "titles.mp4"
+    },
+    "final_pork_pumpkin_vegies": {
+      "image": "333.jpg",
+      "video": "titles.mp4"
+    },
+    "final_nomeat_beetroot_cream": {
+      "image": "360.jpg",
+      "video": "titles.mp4"
+    },
+    "final_nomeat_beetroot_eggs": {
+      "image": "333.jpg",
+      "video": "titles.mp4"
+    },
+    "final_nomeat_beetroot_vegies": {
+      "image": "630.jpg",
+      "video": "titles.mp4"
+    },
+    "final_nomeat_noodle_cream": {
+      "image": "063.jpg",
+      "video": "titles.mp4"
+    },
+    "final_nomeat_noodle_eggs": {
+      "image": "036.jpg",
+      "video": "titles.mp4"
+    },
+    "final_nomeat_noodle_vegies": {
+      "image": "333.jpg",
+      "video": "titles.mp4"
+    },
+    "final_nomeat_pumpkin_cream": {
+      "image": "0pumpkinSoup.jpg",
+      "video": "titles.mp4"
+    },
+    "final_nomeat_pumpkin_eggs": {
+      "image": "063.jpg",
+      "video": "titles.mp4"
+    },
+    "final_nomeat_pumpkin_vegies": {
+      "image": "360.jpg",
+      "video": "titles.mp4"
+    }
+  },
+  "endings": [
+    "early_end",
+    "final_beef_eggs",
+    "final_beef_beetroot_cream",
+    "final_beef_beetroot_eggs",
+    "final_beef_beetroot_vegies",
+    "final_beef_noodle_cream",
+    "final_beef_noodle_eggs",
+    "final_beef_noodle_vegies",
+    "final_beef_pumpkin_cream",
+    "final_beef_pumpkin_eggs",
+    "final_beef_pumpkin_vegies",
+    "final_pork_beetroot_cream",
+    "final_pork_beetroot_eggs",
+    "final_pork_beetroot_vegies",
+    "final_pork_noodle_cream",
+    "final_pork_noodle_eggs",
+    "final_pork_noodle_vegies",
+    "final_pork_pumpkin_cream",
+    "final_pork_pumpkin_eggs",
+    "final_pork_pumpkin_vegies",
+    "final_nomeat_beetroot_cream",
+    "final_nomeat_beetroot_eggs",
+    "final_nomeat_beetroot_vegies",
+    "final_nomeat_noodle_cream",
+    "final_nomeat_noodle_eggs",
+    "final_nomeat_noodle_vegies",
+    "final_nomeat_pumpkin_cream",
+    "final_nomeat_pumpkin_eggs",
+    "final_nomeat_pumpkin_vegies"
+  ]
+}

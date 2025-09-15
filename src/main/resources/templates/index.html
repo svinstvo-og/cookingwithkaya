@@ -114,6 +114,19 @@
             padding: 20px;              /* add padding for responsive spacing */
         }
 
+        .scene-text {
+            position: absolute;   /* or fixed, see note below */
+            bottom: 20px;         /* distance from bottom of screen */
+            left: 50%;
+            transform: translateX(-50%); /* centers horizontally */
+
+            color: white;
+            font-size: 2.5rem;
+            line-height: 1.4;
+            text-align: center;
+            margin: 30px; /* reset old margins */
+        }
+
         .choices-overlay.active {
             visibility: visible;
             opacity: 1;
@@ -317,9 +330,12 @@
         </div>
         <div class="choices-overlay" id="choicesOverlay">
             <div class="choices-container" id="choicesContainer">
-                <div class="scene-text">Your scene text appears here</div>
-                <div class="choice-buttons">Choice buttons here</div>
-                <!-- Choice buttons will be dynamically added here -->
+                <div class="choice-buttons" id="choiceButtons">
+                    <!-- Choice buttons will be dynamically added here -->
+                </div>
+                <div class="scene-text" id="sceneText" style="display: none;">
+                    <!-- Scene text will be displayed here -->
+                </div>
             </div>
         </div>
     </div>
@@ -758,9 +774,22 @@
 
         const overlay = document.getElementById('choicesOverlay');
         const container = document.getElementById('choicesContainer');
+        const sceneTextElement = document.getElementById('sceneText');
+        const choiceButtonsContainer = document.getElementById('choiceButtons');
 
         // Clear existing choices
-        container.innerHTML = '';
+        if (choiceButtonsContainer) {
+            choiceButtonsContainer.innerHTML = '';
+        } else {
+            container.innerHTML = '';
+        }
+
+        const scene = GameState.sceneTree.nodes[GameState.currentScene];
+        const hasSceneText = scene && scene.text;
+
+        sceneTextElement.textContent = scene.text;
+        sceneTextElement.style.display = 'block';
+        // Logger.choice('Scene text displayed:', scene.text);
 
         // Create choice buttons
         choices.forEach((choice, index) => {
@@ -768,7 +797,8 @@
             button.className = 'choice-btn';
             button.textContent = choice.text;
             button.onclick = () => selectChoice(choice, index);
-            container.appendChild(button);
+            const buttonContainer = choiceButtonsContainer || container;
+            buttonContainer.appendChild(button);
 
             Logger.choice(`Choice ${index} created:`, choice.text);
         });
